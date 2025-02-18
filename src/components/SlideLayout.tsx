@@ -23,7 +23,7 @@ interface SlideLayoutProps {
 const SlideLayout: React.FC<SlideLayoutProps> = ({ 
   children, 
   paperSize = 'A4',
-  orientation = 'portrait'
+  orientation = 'landscape'
 }) => {
   const size = PAPER_SIZES[paperSize];
   const { width, height } = orientation === 'portrait' ? size : { width: size.height, height: size.width };
