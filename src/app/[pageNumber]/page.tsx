@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import SlideLayout from '@/components/SlideLayout';
+import dynamic from 'next/dynamic';
 
 interface PageProps {
   params: {
@@ -15,13 +16,15 @@ export default function SlidePage({ params }: PageProps) {
     notFound();
   }
 
+  // Dynamically import the slide content based on page number
+  const SlideContent = dynamic(() =>
+    import(`@/slides/${pageNumber}`).catch(() => notFound())
+  );
+
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-100 p-4">
       <SlideLayout>
-        {/* page content */}
-        <div className="w-full h-full flex items-center justify-center">
-          <h1 className="text-4xl font-bold text-gray-800">Slide {pageNumber}</h1>
-        </div>
+        <SlideContent />
       </SlideLayout>
     </div>
   );

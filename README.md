@@ -64,9 +64,8 @@ pnpm dev
 src/
 ├── app/
 │   ├── [pageNumber]/     # Dynamic slide routes
-│   │   ├── layout.tsx    # Slide page wrapper
-│   │   └── page.tsx      # Individual slide content
-│   ├── layout.tsx        # Root layout with fonts
+│   │   ├── layout.tsx    # Main layout for the page
+│   │   └── page.tsx      # Slide page wrapper (do not modify)
 │   └── globals.css       # Global styles
 ├── components/
 │   └── SlideLayout.tsx   # Multi-format slide component
