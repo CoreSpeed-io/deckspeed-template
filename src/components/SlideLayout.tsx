@@ -31,6 +31,7 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
 
   return (
     <div
+      id="slide-layout"
       className="bg-white shadow-lg"
       style={{
         width: `${width}mm`,

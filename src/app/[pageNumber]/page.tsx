@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import SlideLayout from '@/components/SlideLayout';
 import dynamic from 'next/dynamic';
+import './print.css';
 
 interface PageProps {
   params: {
@@ -22,7 +23,7 @@ export default async function SlidePage({ params }: PageProps) {
   );
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="w-full h-screen flex items-center justify-center bg-gray-100 p-4 print:p-0">
       <SlideLayout>
         <SlideContent />
       </SlideLayout>
