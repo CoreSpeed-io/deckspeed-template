@@ -8,8 +8,8 @@ interface PageProps {
   };
 }
 
-export default function SlidePage({ params }: PageProps) {
-  const pageNumber = parseInt(params.pageNumber);
+export default async function SlidePage({ params }: PageProps) {
+  const pageNumber = parseInt((await params).pageNumber);
 
   // Validate page number
   if (isNaN(pageNumber) || pageNumber < 1) {
