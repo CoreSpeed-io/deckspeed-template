@@ -63,13 +63,16 @@ pnpm dev
 ```
 src/
 ├── app/
-│   ├── [pageNumber]/     # Dynamic slide routes
-│   │   ├── layout.tsx    # Main layout for the page
-│   │   └── page.tsx      # Slide page wrapper (do not modify)
-│   └── globals.css       # Global styles
+│   ├── layout.tsx    # Main layout for the app
+│   ├── page.tsx      # Root page wrapper
+│   └── globals.css   # Global styles
 ├── components/
 │   └── SlideLayout.tsx   # Multi-format slide component
-└── middleware.ts         # Default page handling
+├── slides/           # Directory containing all slide components
+│   ├── 1.tsx        # First slide
+│   ├── 2.tsx        # Second slide
+│   └── ...          # Additional slides
+└── middleware.ts     # Default page handling
 ```
 
 ## Integration
@@ -80,22 +83,16 @@ The template provides a complete development environment for AI-driven slide dec
 2. Follow the established component patterns in `src/components`
 3. Preview changes in real-time through the built-in iframe support
 4. Generate slides using the `SlideLayout` component for consistent formatting
-5. Maintain the existing routing structure for multi-page decks
+5. Place all slides in the `src/slides` directory with clear naming
 
 ### Development Pattern
 ```tsx
-// src/app/[pageNumber]/page.tsx
-import SlideLayout from '@/components/SlideLayout';
-
-export default function SlidePage({ params }) {
+// src/slides/1.tsx
+export default function Slide() {
   return (
-    <SlideLayout paperSize="A4" orientation="landscape">
-      {/* AI-generated slide content goes here */}
-      <div className="p-8">
-        <h1>Your Beautiful Slide</h1>
-        {/* ... */}
-      </div>
-    </SlideLayout>
+    <div className="w-full h-full flex items-center justify-center">
+      <h1 className="text-4xl font-bold text-gray-800">Your Beautiful Slide</h1>
+    </div>
   );
 }
 ```
@@ -105,7 +102,7 @@ The template automatically provides preview capabilities through iframe embeddin
 
 ```html
 <iframe 
-  src="http://localhost:3000/1?format=LETTER&orientation=landscape" 
+  src="http://localhost:3000/{pageNumber}" 
   width="100%" 
   height="100%" 
   frameborder="0"
@@ -127,7 +124,7 @@ The template automatically provides preview capabilities through iframe embeddin
 
 ## Technical Details
 
-- Built with Next.js 14 App Router
+- Built with Next.js 15 App Router
 - Uses Tailwind CSS for styling
 - TypeScript for type safety
 - Implements dynamic routing for slide navigation

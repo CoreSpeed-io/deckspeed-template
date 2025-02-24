@@ -1,0 +1,83 @@
+# CoreSpeed Deck Template - AI Agent Instructions
+
+## Slide Generation Rules
+
+1. SLIDE LOCATION AND NAMING
+   - Place all slides in `/src/slides` directory
+   - Use numeric filenames: `1.tsx`, `2.tsx`, `3.tsx`, etc.
+   - Keep filenames sequential
+
+2. SLIDE COMPONENT STRUCTURE
+   - Export a default function named `Slide`
+   - Use TypeScript for type safety
+   - Example structure:
+     ```tsx
+     export default function Slide() {
+       return (
+         <div className="w-full h-full flex items-center justify-center">
+           <h1 className="text-4xl font-bold text-gray-800">Slide Content</h1>
+         </div>
+       );
+     }
+     ```
+
+3. STYLING GUIDELINES
+   - Use Tailwind CSS classes for styling
+   - Ensure slides are responsive with `w-full h-full`
+   - Center content using flex utilities
+   - Use consistent text sizes:
+     - Headings: text-4xl or larger
+     - Body text: text-base to text-2xl
+   - Use semantic color classes (text-gray-800, etc.)
+
+4. CONTENT ORGANIZATION
+   - One main concept per slide
+   - Use semantic HTML elements (h1, h2, p, etc.)
+   - Maintain visual hierarchy
+   - Keep content centered unless design requires otherwise
+
+5. ACCESSIBILITY
+   - Use semantic HTML elements
+   - Include alt text for images
+   - Maintain sufficient color contrast
+   - Ensure text is readable at all sizes
+
+6. PERFORMANCE
+   - Optimize images before embedding
+   - Avoid unnecessary wrapper components
+   - Keep component logic simple
+   - Minimize external dependencies
+
+7. PREVIEW CONSIDERATIONS
+   - Slides are accessed via URL pattern: `/[slideNumber]`
+   - Support both portrait and landscape orientations
+   - Consider various paper formats (A4, Letter, etc.)
+
+## IMPORTANT NOTES
+
+- DO NOT use the SlideLayout component (removed from actual implementation)
+- DO NOT add complex routing logic (handled by the framework)
+- DO NOT modify the app directory structure
+- DO NOT add external dependencies without clear justification
+
+## File Modification Blacklist
+Under no circumstances should you modify the following files:
+- `src/app/*`
+- `src/components/*`
+- `src/middleware.ts`
+- `.cursorrules`
+- `README.md`
+- `next.config.ts`
+- `tailwind.config.ts`
+- `tsconfig.json`
+
+## Best Practices
+
+1. Start with a clear slide outline
+2. Generate slides sequentially
+3. Maintain consistent styling across all slides
+4. Test preview after generating each slide
+5. Validate TypeScript types
+6. Follow the established patterns in existing slides
+
+Remember: The goal is to create beautiful, responsive slides that work seamlessly in DeckSpeed while maintaining simplicity and performance. 
