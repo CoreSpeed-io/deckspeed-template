@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Standard paper sizes in millimeters
 export const PAPER_SIZES = {
@@ -33,6 +33,10 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
   const { width, height } = orientation === 'portrait' ? size : { width: size.height, height: size.width };
   const aspectRatio = `${width}/${height}`;
 
+  const [isScaled, setIsScaled] = useState(false);
+  const [scale, setScale] = useState(0);
+
+  // Calculate initial scale before render
   useEffect(() => {
     const container = containerRef.current;
     const slide = slideRef.current;
@@ -43,18 +47,26 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
       const padding = 16; // 1rem
       const scaleX = (containerRect.width - padding * 2) / (width * 3.7795275591); // Convert mm to px (1mm ≈ 3.7795275591px)
       const scaleY = (containerRect.height - padding * 2) / (height * 3.7795275591);
-      const scale = Math.min(1, Math.min(scaleX, scaleY));
-      slide.style.setProperty('--scale', scale.toString());
+      const newScale = Math.min(1, Math.min(scaleX, scaleY));
+      setScale(newScale);
+      slide.style.setProperty('--scale', newScale.toString());
+      
+      if (!isScaled) {
+        setIsScaled(true);
+      }
     };
 
+    // Run immediately
+    updateScale();
+
+    // Also set up observer for future resizes
     const resizeObserver = new ResizeObserver(updateScale);
     resizeObserver.observe(container);
-    updateScale(); // Initial scale update
 
     return () => {
       resizeObserver.disconnect();
     };
-  }, [width, height]);
+  }, [width, height, isScaled]);
 
   return (
     <div 
@@ -69,8 +81,10 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
           width: `${width}mm`,
           height: `${height}mm`,
           aspectRatio,
-          transform: 'scale(var(--scale))',
+          transform: `scale(${scale})`,
           transformOrigin: 'center center',
+          opacity: isScaled ? 1 : 0,
+          transition: 'opacity 0.1s ease-in-out',
         }}
       >
         {children}
