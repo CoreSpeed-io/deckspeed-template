@@ -1,25 +1,28 @@
 import { notFound } from 'next/navigation';
 import SlideLayout from '@/components/SlideLayout';
 import dynamic from 'next/dynamic';
+import mapping from '@/slides/mapping.json';
 import './print.css';
+import type { SlideMapping } from '@/types/slides';
 
 interface PageProps {
   params: {
-    pageNumber: string;
+    id: string;
   };
 }
 
 export default async function SlidePage({ params }: PageProps) {
-  const pageNumber = parseInt((await params).pageNumber);
+  const { id } = await params;
+  const slideMapping = mapping as SlideMapping;
 
-  // Validate page number
-  if (isNaN(pageNumber) || pageNumber < 1) {
+  // Validate ID exists in mapping
+  if (!slideMapping.slides[id]) {
     notFound();
   }
 
-  // Dynamically import the slide content based on page number
+  // Dynamically import the slide content based on ID
   const SlideContent = dynamic(() =>
-    import(`@/slides/${pageNumber}`).catch(() => notFound())
+    import(`@/slides/${id}`).catch(() => notFound())
   );
 
   return (
