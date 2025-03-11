@@ -1,4 +1,6 @@
-import React from 'react';
+"use client"
+
+import React, { useEffect, useRef } from 'react';
 
 // Standard paper sizes in millimeters
 export const PAPER_SIZES = {
@@ -25,27 +27,56 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
   paperSize = 'A4',
   orientation = 'landscape'
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
   const size = PAPER_SIZES[paperSize];
   const { width, height } = orientation === 'portrait' ? size : { width: size.height, height: size.width };
   const aspectRatio = `${width}/${height}`;
 
+  useEffect(() => {
+    const container = containerRef.current;
+    const slide = slideRef.current;
+    if (!container || !slide) return;
+
+    const updateScale = () => {
+      const containerRect = container.getBoundingClientRect();
+      const padding = 16; // 1rem
+      const scaleX = (containerRect.width - padding * 2) / (width * 3.7795275591); // Convert mm to px (1mm ≈ 3.7795275591px)
+      const scaleY = (containerRect.height - padding * 2) / (height * 3.7795275591);
+      const scale = Math.min(1, Math.min(scaleX, scaleY));
+      slide.style.setProperty('--scale', scale.toString());
+    };
+
+    const resizeObserver = new ResizeObserver(updateScale);
+    resizeObserver.observe(container);
+    updateScale(); // Initial scale update
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [width, height]);
+
   return (
-    <div
-      id="slide-layout"
-      className="bg-white shadow-lg"
-      style={{
-        width: `${width}mm`,
-        height: `${height}mm`,
-        maxHeight: '90vh',
-        aspectRatio,
-        transform: 'scale(var(--scale))',
-        transformOrigin: 'center center',
-        ['--scale' as string]: `min(1, min((90vh - 2rem)/${height}mm, (100vw - 2rem)/${width}mm))`,
-      }}
+    <div 
+      ref={containerRef}
+      className="w-full h-full flex items-center justify-center"
     >
-      {children}
+      <div
+        ref={slideRef}
+        id="slide-layout"
+        className="bg-white shadow-lg"
+        style={{
+          width: `${width}mm`,
+          height: `${height}mm`,
+          aspectRatio,
+          transform: 'scale(var(--scale))',
+          transformOrigin: 'center center',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
 
-export default SlideLayout; 
+export default SlideLayout;
