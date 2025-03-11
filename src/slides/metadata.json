@@ -1,0 +1,24 @@
+{
+  "title": "DeckSpeed",
+  "description": "Generate beautiful slide decks with AI",
+  "paperSize": "A4",
+  "orientation": "landscape",
+  "order": [
+    "550e8400",
+    "6ba7b810"
+  ],
+  "slides": {
+    "550e8400": {
+      "index": 1,
+      "title": "Slide 1",
+      "description": "Description of Slide 1",
+      "filename": "550e8400.tsx"
+    },
+    "6ba7b810": {
+      "index": 2,
+      "title": "Slide 2",
+      "description": "Description of Slide 2",
+      "filename": "6ba7b810.tsx"
+    }
+  }
+}

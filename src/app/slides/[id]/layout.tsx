@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import mapping from '@/slides/metadata.json';
+import type { SlideMetadata } from '@/types/slides';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -12,9 +14,11 @@ import "./globals.css";
 //   subsets: ["latin"],
 // });
 
+const slideMapping = mapping as SlideMetadata;
+
 export const metadata: Metadata = {
-  title: "DeckSpeed",
-  description: "Generate beautiful slide decks with AI",
+  title: slideMapping.title,
+  description: slideMapping.description,
 };
 
 export default function RootLayout({

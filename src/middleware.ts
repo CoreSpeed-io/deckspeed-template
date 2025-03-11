@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import mapping from './slides/mapping.json'
-import type { SlideMapping } from './types/slides'
+import metadata from './slides/metadata.json'
+import type { SlideMetadata } from './types/slides'
 
-const slideMapping = mapping as SlideMapping;
+const slideMapping = metadata as SlideMetadata;
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

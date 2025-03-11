@@ -1,31 +1,22 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react';
-
-// Standard paper sizes in millimeters
-export const PAPER_SIZES = {
-  'A4': { width: 210, height: 297 },
-  'A3': { width: 297, height: 420 },
-  'A5': { width: 148, height: 210 },
-  'LETTER': { width: 215.9, height: 279.4 },
-  'LEGAL': { width: 215.9, height: 355.6 },
-  'TABLOID': { width: 279.4, height: 431.8 },
-  'PRESENTATION': { width: 254, height: 190.5 }, // 4:3 aspect ratio
-  'WIDE': { width: 320, height: 180 }, // 16:9 aspect ratio
-} as const;
-
-export type PaperSize = keyof typeof PAPER_SIZES;
+import { PaperSize, Orientation, PAPER_SIZES } from '@/types/slides';
 
 interface SlideLayoutProps {
   children: React.ReactNode;
   paperSize?: PaperSize;
-  orientation?: 'portrait' | 'landscape';
+  orientation?: Orientation;
+  title?: string;
+  description?: string;
 }
 
 const SlideLayout: React.FC<SlideLayoutProps> = ({ 
   children, 
   paperSize = 'A4',
-  orientation = 'landscape'
+  orientation = 'landscape',
+  title,
+  description
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRef = useRef<HTMLDivElement>(null);
@@ -86,6 +77,8 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
           opacity: isScaled ? 1 : 0,
           transition: 'opacity 0.1s ease-in-out',
         }}
+        title={title}
+        aria-description={description}
       >
         {children}
       </div>
