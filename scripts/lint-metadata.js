@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const metadataPath = path.join(process.cwd(), "src", "slides", "metadata.json");
+const slidesDir = path.dirname(metadataPath);
 
 // Define required fields for top-level and each slide
 const topLevelRequiredFields = ["title", "description", "order"];
@@ -22,6 +23,27 @@ function lintMetadata() {
   }
 
   let hasErrors = false;
+
+  // Get all TSX files in the slides directory
+  const slideFiles = fs.readdirSync(slidesDir)
+    .filter(file => file.endsWith('.tsx'))
+    .map(file => file);
+
+  // Create a set of all filenames referenced in metadata
+  const referencedFiles = new Set();
+  if (metadata.slides) {
+    Object.values(metadata.slides).forEach(slide => {
+      referencedFiles.add(slide.filename);
+    });
+  }
+
+  // Check for TSX files that aren't referenced in metadata
+  slideFiles.forEach(file => {
+    if (!referencedFiles.has(file)) {
+      console.error(`Error: TSX file "${file}" exists in slides directory but is not referenced in metadata.json`);
+      hasErrors = true;
+    }
+  });
 
   // Validate top-level required fields
   topLevelRequiredFields.forEach((field) => {
@@ -56,10 +78,7 @@ function lintMetadata() {
 
         // Validate that the file referenced in the slide exists.
         // We assume the file path is relative to the directory containing metadata.json.
-        const slideFilePath = path.join(
-          path.dirname(metadataPath),
-          metadata.slides[slideId].filename
-        );
+        const slideFilePath = path.join(slidesDir, metadata.slides[slideId].filename);
         if (!fs.existsSync(slideFilePath)) {
           console.error(
             `Error: File "${metadata.slides[slideId].filename}" for slide "${slideId}" does not exist at ${slideFilePath}`
