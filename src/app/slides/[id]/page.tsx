@@ -32,9 +32,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function SlidePage({ params }: PageProps) {
+export default async function SlidePage({ params, searchParams }: { params: { id: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
   const { id } = await params;
   const slideMapping = mapping as SlideMetadata;
+  const isThumbnail = searchParams.thumbnail === 'true';
 
   // Validate ID exists in mapping
   if (!slideMapping.slides[id]) {
@@ -49,12 +50,13 @@ export default async function SlidePage({ params }: PageProps) {
   );
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-100 p-4 print:p-0">
+    <div className={`w-full h-screen ${isThumbnail ? '' : 'flex items-center justify-center bg-gray-100 p-4'} print:p-0`}>
       <SlideLayout 
         paperSize={slideMapping.paperSize}
         orientation={slideMapping.orientation}
         title={slideInfo.title}
         description={slideInfo.description}
+        isThumbnail={isThumbnail}
       >
         <SlideContent />
       </SlideLayout>

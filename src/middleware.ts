@@ -21,7 +21,15 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/404', request.url))
     }
     const id = slideMapping.order[pageNumber - 1]
-    return NextResponse.rewrite(new URL(`/slides/${id}`, request.url))
+    
+    // Preserve the thumbnail parameter if present
+    const url = new URL(`/slides/${id}`, request.url)
+    const isThumbnail = request.nextUrl.searchParams.get('thumbnail') === 'true'
+    if (isThumbnail) {
+      url.searchParams.set('thumbnail', 'true')
+    }
+    
+    return NextResponse.rewrite(url)
   }
 
   // Handle /by-id/[id] routes
@@ -31,7 +39,15 @@ export function middleware(request: NextRequest) {
     if (!slideMapping.slides[id]) {
       return NextResponse.redirect(new URL('/404', request.url))
     }
-    return NextResponse.rewrite(new URL(`/slides/${id}`, request.url))
+    
+    // Preserve the thumbnail parameter if present
+    const url = new URL(`/slides/${id}`, request.url)
+    const isThumbnail = request.nextUrl.searchParams.get('thumbnail') === 'true'
+    if (isThumbnail) {
+      url.searchParams.set('thumbnail', 'true')
+    }
+    
+    return NextResponse.rewrite(url)
   }
 }
 
