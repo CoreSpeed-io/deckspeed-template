@@ -4,8 +4,8 @@
 
 1. SLIDE LOCATION AND NAMING
    - Place all slides in `/src/slides` directory
-   - Use numeric filenames: `1.tsx`, `2.tsx`, `3.tsx`, etc.
-   - Keep filenames sequential
+   - Use keywords of generated slide content with a random number as the ID of the slide. For example, `introduction-to-apple-iphone-8273` is a valid ID.
+   - Use the format of `{slideId}.tsx` as the filename of the slide file. For example, `introduction-to-apple-iphone-8273.tsx` is a valid slide filename. 
 
 2. SLIDE COMPONENT STRUCTURE
    - Export a default function named `Slide`
@@ -49,7 +49,7 @@
    - Minimize external dependencies
 
 7. PREVIEW CONSIDERATIONS
-   - Slides are accessed via URL pattern: `/[slideNumber]`
+   - Slides are accessed via URL pattern: `/by-index/[slideIndex]` or `/by-id/[slideId]`, where `slideIndex` is the index of the slide in the among all slides, and `slideId` is the ID of the target slide.  
    - Support both portrait and landscape orientations
    - Consider various paper formats (A4, Letter, etc.)
 
