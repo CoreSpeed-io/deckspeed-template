@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function SlidePage({ params, searchParams }: { params: { id: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
   const { id } = await params;
   const slideMapping = mapping as DeckMetadata;
-  const isThumbnail = await searchParams.thumbnail === 'true';
+  const isThumbnail = (await searchParams).thumbnail === 'true';
 
   // Validate ID exists in mapping
   if (!slideMapping.order.hasOwnProperty(id)) {
