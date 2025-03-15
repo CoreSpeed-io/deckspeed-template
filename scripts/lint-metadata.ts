@@ -15,7 +15,7 @@ interface DeckMetadata {
 
 const slidesDir = path.join(process.cwd(), "src", "slides")
 const metadataPath = path.join(slidesDir, "metadata.json");
-const schemaPath = path.join(slidesDir, "metadata.schema.json");
+const schemaPath = path.join(process.cwd(), "scripts", "metadata.schema.json");
 
 function printError(message: string, details?: string) {
   console.error(`❌ ${message}${details ? `\n   ${details}` : ''}`);

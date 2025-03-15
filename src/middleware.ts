@@ -38,10 +38,10 @@ export function middleware(request: NextRequest) {
   }
 
   // Handle /by-id/[id] routes
-  const idMatch = pathname.match(/^\/by-id\/([0-9a-f-]+)$/)
+  const idMatch = pathname.match(/^\/by-id\/([a-z0-9-]+)$/)
   if (idMatch) {
     const id = idMatch[1]
-    if (!slideMapping.order.hasOwnProperty(id)) {
+    if (!(id in slideMapping.order)) {
       return NextResponse.redirect(new URL('/404', request.url))
     }
     
