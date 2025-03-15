@@ -3,11 +3,31 @@
 ## Slide Generation Rules
 
 1. SLIDE LOCATION AND NAMING
-   - Place all slides in `/src/slides` directory
-   - Use keywords of generated slide content with a random number as the ID of the slide. For example, `introduction-to-apple-iphone-8273` is a valid ID.
-   - Use the format of `{slideId}.tsx` as the filename of the slide file. For example, `introduction-to-apple-iphone-8273.tsx` is a valid slide filename. 
+   - Place all slides in `src/slides` directory
+   - Use lower case keywords of generated slide content and a random number connected with hyphens as the ID of the slide. For example, `introduction-to-deckspeed-1123` is a valid ID.
+   - Use the format of `{slideId}.tsx` as the filename of the slide file. For example, `introduction-to-deckspeed-1123.tsx` is a valid slide filename. 
 
-2. SLIDE COMPONENT STRUCTURE
+2. SLIDE METADATA MANGEMENT
+   - All metadata of slides are stored in JSON file `src/slides/metadata.json`
+   - Example `metadata.json`:
+     ```json
+     {
+       "title": "DeckSpeed",
+       "description": "Generate beautiful slide decks with AI",
+       "author": "CoreSpeed Inc.",
+       "paperSize": "A4",
+       "orientation": "landscape",
+       "order": {
+         "welcome-page-2134": 1,
+         "introduction-to-deckspeed-1123": 2,
+         "lets-get-started-5683": 3
+       }
+     }
+     ```
+   - To reorder a slide, please only modify the ordering of slide IDs in the `order` list in metadata.
+   - 
+
+3. SLIDE COMPONENT STRUCTURE
    - Export a default function named `Slide`
    - Use TypeScript for type safety
    - Example structure:
@@ -21,7 +41,7 @@
      }
      ```
 
-3. STYLING GUIDELINES
+4. STYLING GUIDELINES
    - Use Tailwind CSS classes for styling
    - Ensure slides are responsive with `w-full h-full`
    - Center content using flex utilities
@@ -30,26 +50,25 @@
      - Body text: text-base to text-2xl
    - Use semantic color classes (text-gray-800, etc.)
 
-4. CONTENT ORGANIZATION
+5. CONTENT ORGANIZATION
    - One main concept per slide
    - Use semantic HTML elements (h1, h2, p, etc.)
    - Maintain visual hierarchy
    - Keep content centered unless design requires otherwise
 
-5. ACCESSIBILITY
+6. ACCESSIBILITY
    - Use semantic HTML elements
    - Include alt text for images
    - Maintain sufficient color contrast
    - Ensure text is readable at all sizes
 
-6. PERFORMANCE
+7. PERFORMANCE
    - Optimize images before embedding
    - Avoid unnecessary wrapper components
    - Keep component logic simple
    - Minimize external dependencies
 
-7. PREVIEW CONSIDERATIONS
-   - Slides are accessed via URL pattern: `/by-index/[slideIndex]` or `/by-id/[slideId]`, where `slideIndex` is the index of the slide in the among all slides, and `slideId` is the ID of the target slide.  
+8. PREVIEW CONSIDERATIONS
    - Support both portrait and landscape orientations
    - Consider various paper formats (A4, Letter, etc.)
 

@@ -3,7 +3,7 @@ import SlideLayout from '@/components/SlideLayout';
 import dynamic from 'next/dynamic';
 import mapping from '@/slides/metadata.json';
 import './print.css';
-import type { SlideMetadata } from '@/types/slides';
+import type { DeckMetadata } from '@/types/slides';
 import type { Metadata } from 'next';
 
 interface PageProps {
@@ -14,35 +14,39 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const slideMapping = mapping as SlideMetadata;
+  const slideMapping = mapping as DeckMetadata;
 
   // Validate ID exists in mapping
-  if (!slideMapping.slides[id]) {
+  if (!slideMapping.order.hasOwnProperty(id)) {
     return {
       title: slideMapping.title,
       description: slideMapping.description
     };
   }
 
-  const slideInfo = slideMapping.slides[id];
-  
+  // Since we don't have slide info with titles and descriptions,
+  // we'll use the ID as part of the title
   return {
-    title: `${slideInfo.title} | ${slideMapping.title}`,
-    description: slideInfo.description
+    title: `Slide ${slideMapping.order[id]} | ${slideMapping.title}`,
+    description: slideMapping.description
   };
 }
 
 export default async function SlidePage({ params, searchParams }: { params: { id: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
   const { id } = await params;
-  const slideMapping = mapping as SlideMetadata;
+  const slideMapping = mapping as DeckMetadata;
   const isThumbnail = searchParams.thumbnail === 'true';
 
   // Validate ID exists in mapping
-  if (!slideMapping.slides[id]) {
+  if (!slideMapping.order.hasOwnProperty(id)) {
     notFound();
   }
 
-  const slideInfo = slideMapping.slides[id];
+  // Since we don't have slide info with titles and descriptions,
+  // we'll use the ID and position for display
+  const slidePosition = slideMapping.order[id];
+  const slideTitle = `Slide ${slidePosition}`;
+  const slideDescription = `${slideMapping.title} - Slide ${slidePosition}`;
 
   // Dynamically import the slide content based on ID
   const SlideContent = dynamic(() =>
@@ -54,8 +58,8 @@ export default async function SlidePage({ params, searchParams }: { params: { id
       <SlideLayout 
         paperSize={slideMapping.paperSize}
         orientation={slideMapping.orientation}
-        title={slideInfo.title}
-        description={slideInfo.description}
+        title={slideTitle}
+        description={slideDescription}
         isThumbnail={isThumbnail}
       >
         <SlideContent />

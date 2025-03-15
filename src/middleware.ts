@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import metadata from './slides/metadata.json'
-import type { SlideMetadata } from './types/slides'
+import type { DeckMetadata } from './types/slides'
 
-const slideMapping = metadata as SlideMetadata;
+const slideMapping = metadata as DeckMetadata;
+
+// Convert order object to array for easier indexing
+const slideOrder = Object.entries(slideMapping.order)
+  .sort((a, b) => a[1] - b[1])
+  .map(([id]) => id);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -17,10 +22,10 @@ export function middleware(request: NextRequest) {
   const indexMatch = pathname.match(/^\/by-index\/(\d+)$/)
   if (indexMatch) {
     const pageNumber = parseInt(indexMatch[1])
-    if (pageNumber < 1 || pageNumber > slideMapping.order.length) {
+    if (pageNumber < 1 || pageNumber > slideOrder.length) {
       return NextResponse.redirect(new URL('/404', request.url))
     }
-    const id = slideMapping.order[pageNumber - 1]
+    const id = slideOrder[pageNumber - 1]
     
     // Preserve the thumbnail parameter if present
     const url = new URL(`/slides/${id}`, request.url)
@@ -36,7 +41,7 @@ export function middleware(request: NextRequest) {
   const idMatch = pathname.match(/^\/by-id\/([0-9a-f-]+)$/)
   if (idMatch) {
     const id = idMatch[1]
-    if (!slideMapping.slides[id]) {
+    if (!slideMapping.order.hasOwnProperty(id)) {
       return NextResponse.redirect(new URL('/404', request.url))
     }
     

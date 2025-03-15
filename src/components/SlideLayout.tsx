@@ -75,7 +75,7 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
       <div
         ref={slideRef}
         id="slide-layout"
-        className={isThumbnail ? '' : 'bg-white shadow-lg'}
+        className={isThumbnail ? 'bg-white' : 'bg-white shadow-lg'}
         style={isThumbnail ? {
           width: '100%',
           height: '100%',
