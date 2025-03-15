@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import mapping from '@/slides/metadata.json';
-import type { SlideMetadata } from '@/types/slides';
+import type { DeckMetadata } from '@/types/slides';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -14,7 +14,7 @@ import type { SlideMetadata } from '@/types/slides';
 //   subsets: ["latin"],
 // });
 
-const slideMapping = mapping as SlideMetadata;
+const slideMapping = mapping as DeckMetadata;
 
 export const metadata: Metadata = {
   title: slideMapping.title,

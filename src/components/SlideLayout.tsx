@@ -9,6 +9,7 @@ interface SlideLayoutProps {
   orientation?: Orientation;
   title?: string;
   description?: string;
+  isThumbnail?: boolean;
 }
 
 const SlideLayout: React.FC<SlideLayoutProps> = ({ 
@@ -16,7 +17,8 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
   paperSize = 'A4',
   orientation = 'landscape',
   title,
-  description
+  description,
+  isThumbnail = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRef = useRef<HTMLDivElement>(null);
@@ -29,6 +31,12 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
 
   // Calculate initial scale before render
   useEffect(() => {
+    // Skip scaling calculation for thumbnails
+    if (isThumbnail) {
+      setIsScaled(true);
+      return;
+    }
+    
     const container = containerRef.current;
     const slide = slideRef.current;
     if (!container || !slide) return;
@@ -57,18 +65,23 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [width, height, isScaled]);
+  }, [width, height, isScaled, isThumbnail]);
 
   return (
     <div 
       ref={containerRef}
-      className="w-full h-full flex items-center justify-center"
+      className={`w-full h-full ${isThumbnail ? '' : 'flex items-center justify-center'}`}
     >
       <div
         ref={slideRef}
         id="slide-layout"
-        className="bg-white shadow-lg"
-        style={{
+        className={isThumbnail ? 'bg-white' : 'bg-white shadow-lg'}
+        style={isThumbnail ? {
+          width: '100%',
+          height: '100%',
+          opacity: isScaled ? 1 : 0,
+          transition: 'opacity 0.1s ease-in-out',
+        } : {
           width: `${width}mm`,
           height: `${height}mm`,
           aspectRatio,

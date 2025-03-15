@@ -1,24 +1,12 @@
 {
   "title": "DeckSpeed",
   "description": "Generate beautiful slide decks with AI",
+  "author": "CoreSpeed Inc.",
   "paperSize": "A4",
   "orientation": "landscape",
-  "order": [
-    "550e8400",
-    "6ba7b810"
-  ],
-  "slides": {
-    "550e8400": {
-      "index": 1,
-      "title": "Slide 1",
-      "description": "Description of Slide 1",
-      "filename": "550e8400.tsx"
-    },
-    "6ba7b810": {
-      "index": 2,
-      "title": "Slide 2",
-      "description": "Description of Slide 2",
-      "filename": "6ba7b810.tsx"
-    }
+  "order": {
+    "introduction-to-deckspeed-1123": 1,
+    "deckspeed-features-7842": 2,
+    "how-deckspeed-works-9356": 3
   }
 }

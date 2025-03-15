@@ -13,20 +13,13 @@ export const PAPER_SIZES = {
 export type PaperSize = keyof typeof PAPER_SIZES;
 export type Orientation = 'portrait' | 'landscape';
 
-export interface SlideInfo {
-  index: number;
+export interface DeckMetadata {
   title: string;
   description: string;
-  filename: string;
-}
-
-export interface SlideMetadata {
-  title: string;
-  description: string;
+  author: string;
   paperSize: PaperSize;
   orientation: Orientation;
-  order: string[];
-  slides: {
-    [id: string]: SlideInfo;
+  order: {
+    [id: string]: number;
   };
 }
