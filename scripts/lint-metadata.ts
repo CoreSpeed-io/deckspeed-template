@@ -1,20 +1,38 @@
-const fs = require("fs");
-const path = require("path");
+import * as fs from "fs";
+import * as path from "path";
+
+interface SlideMetadata {
+  index: number;
+  title: string;
+  description: string;
+  filename: string;
+}
+
+interface DeckMetadata {
+  title: string;
+  description: string;
+  paperSize?: string;
+  orientation?: string;
+  order: string[];
+  slides?: {
+    [key: string]: SlideMetadata;
+  };
+}
 
 const metadataPath = path.join(process.cwd(), "src", "slides", "metadata.json");
 const slidesDir = path.dirname(metadataPath);
 
 // Define required fields for top-level and each slide
-const topLevelRequiredFields = ["title", "description", "order"];
-const slideRequiredFields = ["index", "title", "description", "filename"];
+const topLevelRequiredFields: Array<keyof DeckMetadata> = ["title", "description", "order"];
+const slideRequiredFields: Array<keyof SlideMetadata> = ["index", "title", "description", "filename"];
 
-function lintMetadata() {
+function lintMetadata(): void {
   if (!fs.existsSync(metadataPath)) {
     console.error("Error: metadata.json not found at", metadataPath);
     process.exit(1);
   }
 
-  let metadata;
+  let metadata: DeckMetadata;
   try {
     metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8"));
   } catch (error) {
@@ -26,19 +44,19 @@ function lintMetadata() {
 
   // Get all TSX files in the slides directory
   const slideFiles = fs.readdirSync(slidesDir)
-    .filter(file => file.endsWith('.tsx'))
-    .map(file => file);
+    .filter((file: string) => file.endsWith('.tsx'))
+    .map((file: string) => file);
 
   // Create a set of all filenames referenced in metadata
-  const referencedFiles = new Set();
+  const referencedFiles = new Set<string>();
   if (metadata.slides) {
-    Object.values(metadata.slides).forEach(slide => {
+    Object.values(metadata.slides).forEach((slide: SlideMetadata) => {
       referencedFiles.add(slide.filename);
     });
   }
 
   // Check for TSX files that aren't referenced in metadata
-  slideFiles.forEach(file => {
+  slideFiles.forEach((file: string) => {
     if (!referencedFiles.has(file)) {
       console.error(`Error: TSX file "${file}" exists in slides directory but is not referenced in metadata.json`);
       hasErrors = true;
@@ -46,7 +64,7 @@ function lintMetadata() {
   });
 
   // Validate top-level required fields
-  topLevelRequiredFields.forEach((field) => {
+  topLevelRequiredFields.forEach((field: keyof DeckMetadata) => {
     if (metadata[field] === undefined) {
       console.error(`Error: Missing required field "${field}"`);
       hasErrors = true;
@@ -62,13 +80,13 @@ function lintMetadata() {
   // If slides exist, validate slide details and cross-check IDs between order and slides
   if (metadata.slides && typeof metadata.slides === "object") {
     // Validate that every slide ID in the order exists in the slides object
-    metadata.order.forEach((slideId) => {
-      if (!metadata.slides[slideId]) {
+    metadata.order.forEach((slideId: string) => {
+      if (!metadata.slides?.[slideId]) {
         console.error(`Error: Slide with id "${slideId}" not found in slides`);
         hasErrors = true;
       } else {
-        slideRequiredFields.forEach((field) => {
-          if (metadata.slides[slideId][field] === undefined) {
+        slideRequiredFields.forEach((field: keyof SlideMetadata) => {
+          if (metadata.slides?.[slideId][field] === undefined) {
             console.error(
               `Error: Slide with id "${slideId}" is missing required field "${field}"`
             );
@@ -89,7 +107,7 @@ function lintMetadata() {
     });
 
     // Validate that every slide in the slides object is referenced in the order array
-    Object.keys(metadata.slides).forEach((slideId) => {
+    Object.keys(metadata.slides).forEach((slideId: string) => {
       if (!metadata.order.includes(slideId)) {
         console.error(`Error: Slide with id "${slideId}" is present in slides but not referenced in order`);
         hasErrors = true;
@@ -109,4 +127,4 @@ function lintMetadata() {
 }
 
 // Run the linter
-lintMetadata();
+lintMetadata(); 
