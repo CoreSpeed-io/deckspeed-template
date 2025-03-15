@@ -10,8 +10,6 @@ This template provides a structured environment where AI coding agents can devel
 - Precise paper format controls with multiple size options
 - Clean, predictable architecture for AI-driven development
 - Standardized component patterns for consistent results
-- Built-in iframe support for seamless integration
-- Dynamic routing for multi-page presentations
 
 ## Features
 
@@ -22,7 +20,6 @@ This template provides a structured environment where AI coding agents can devel
   - Wide (16:9)
 - **Orientation Control**: Switch between portrait and landscape
 - **Responsive Scaling**: Automatically scales to fit any container while maintaining aspect ratio
-- **Dynamic Routing**: Direct slide access via URL parameters (e.g., `/1`, `/2`, etc.)
 - **AI-Friendly Architecture**: 
   - Clean, predictable structure for AI code generation
   - Standardized component patterns
@@ -66,28 +63,31 @@ src/
 │   ├── layout.tsx    # Main layout for the app
 │   ├── page.tsx      # Root page wrapper
 │   └── globals.css   # Global styles
-├── components/
-│   └── SlideLayout.tsx   # Multi-format slide component
-├── slides/           # Directory containing all slide components
-│   ├── 1.tsx        # First slide
-│   ├── 2.tsx        # Second slide
+├── components/       # Shared components
+├── slides/          # Directory containing all slide components
+│   ├── metadata.json # Slide metadata and ordering configuration
+│   ├── introduction-to-deckspeed-1123.tsx  # Example slide
+│   ├── deckspeed-features-7842.tsx         # Example slide
 │   └── ...          # Additional slides
-└── middleware.ts     # Default page handling
+└── middleware.ts    # Default page handling
 ```
 
-## Integration
+## Slide Management
 
-The template provides a complete development environment for AI-driven slide deck generation:
+### Slide Naming Convention
+- Slides are named using descriptive keywords and a random number
+- Format: `{descriptive-name}-{random-number}.tsx`
+- The filename without the `.tsx` extension serves as the slide's ID
+- Example: File `introduction-to-deckspeed-1123.tsx` has ID `introduction-to-deckspeed-1123`
 
-1. Use this template as the starting point for new deck generation
-2. Follow the established component patterns in `src/components`
-3. Preview changes in real-time through the built-in iframe support
-4. Generate slides using the `SlideLayout` component for consistent formatting
-5. Place all slides in the `src/slides` directory with clear naming
+### Preview Access
+The deck can be previewed through two endpoints:
+- `/by-id/{slide-id}` - Access slide directly by its ID (e.g., `/by-id/introduction-to-deckspeed-1123`)
+- `/by-index/{number}` - Access slide by its position in the deck (e.g., `/by-index/1`)
 
 ### Development Pattern
 ```tsx
-// src/slides/1.tsx
+// src/slides/introduction-to-deckspeed-1123.tsx
 export default function Slide() {
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -95,18 +95,6 @@ export default function Slide() {
     </div>
   );
 }
-```
-
-### Preview Integration
-The template automatically provides preview capabilities through iframe embedding:
-
-```html
-<iframe 
-  src="http://localhost:3000/{pageNumber}" 
-  width="100%" 
-  height="100%" 
-  frameborder="0"
-></iframe>
 ```
 
 ### Supported Paper Formats
@@ -127,7 +115,6 @@ The template automatically provides preview capabilities through iframe embeddin
 - Built with Next.js 15 App Router
 - Uses Tailwind CSS for styling
 - TypeScript for type safety
-- Implements dynamic routing for slide navigation
 - Supports multiple paper formats and orientations
 - Optimized for iframe embedding
 
