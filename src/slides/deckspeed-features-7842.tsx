@@ -1,3 +1,10 @@
+import { SlideMetadata } from '../types/slides';
+
+export const metadata: SlideMetadata = {
+  title: "DeckSpeed Features",
+  description: "Detailed overview of key features and benefits of using DeckSpeed"
+};
+
 export default function Slide() {
   return (
     <div className="w-full h-full flex items-center justify-center bg-white">

@@ -13,6 +13,11 @@ export const PAPER_SIZES = {
 export type PaperSize = keyof typeof PAPER_SIZES;
 export type Orientation = 'portrait' | 'landscape';
 
+export interface SlideMetadata {
+  title: string;
+  description: string;
+}
+
 export interface DeckMetadata {
   title: string;
   description: string;
