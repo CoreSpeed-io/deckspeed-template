@@ -31,24 +31,30 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
 
   // Calculate initial scale before render
   useEffect(() => {
-    // Skip scaling calculation for thumbnails
-    if (isThumbnail) {
-      setIsScaled(true);
-      return;
-    }
-    
     const container = containerRef.current;
     const slide = slideRef.current;
     if (!container || !slide) return;
 
     const updateScale = () => {
       const containerRect = container.getBoundingClientRect();
-      const padding = 16; // 1rem
-      const scaleX = (containerRect.width - padding * 2) / (width * 3.7795275591); // Convert mm to px (1mm ≈ 3.7795275591px)
-      const scaleY = (containerRect.height - padding * 2) / (height * 3.7795275591);
-      const newScale = Math.min(1, Math.min(scaleX, scaleY));
-      setScale(newScale);
-      slide.style.setProperty('--scale', newScale.toString());
+      
+      if (isThumbnail) {
+        // For thumbnails, use the maximum scale to completely fill the container
+        // This may crop some content but eliminates white bezels
+        const scaleX = containerRect.width / (width * 3.7795275591); // Convert mm to px
+        const scaleY = containerRect.height / (height * 3.7795275591);
+        
+        // Use the larger scale to ensure full coverage
+        const newScale = Math.max(scaleX, scaleY);
+        setScale(newScale);
+      } else {
+        // For regular slides, maintain the padding and limit to scale 1
+        const padding = 16; // 1rem padding for regular slides
+        const scaleX = (containerRect.width - padding * 2) / (width * 3.7795275591);
+        const scaleY = (containerRect.height - padding * 2) / (height * 3.7795275591);
+        const newScale = Math.min(1, Math.min(scaleX, scaleY));
+        setScale(newScale);
+      }
       
       if (!isScaled) {
         setIsScaled(true);
@@ -70,18 +76,14 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
   return (
     <div 
       ref={containerRef}
-      className={`w-full h-full ${isThumbnail ? '' : 'flex items-center justify-center'}`}
+      className="w-full h-full flex items-center justify-center"
+      style={isThumbnail ? { overflow: 'hidden' } : {}}
     >
       <div
         ref={slideRef}
         id="slide-layout"
-        className={isThumbnail ? 'bg-white' : 'bg-white shadow-lg'}
-        style={isThumbnail ? {
-          width: '100%',
-          height: '100%',
-          opacity: isScaled ? 1 : 0,
-          transition: 'opacity 0.1s ease-in-out',
-        } : {
+        className="bg-white"
+        style={{
           width: `${width}mm`,
           height: `${height}mm`,
           aspectRatio,
@@ -89,6 +91,7 @@ const SlideLayout: React.FC<SlideLayoutProps> = ({
           transformOrigin: 'center center',
           opacity: isScaled ? 1 : 0,
           transition: 'opacity 0.1s ease-in-out',
+          ...(isThumbnail ? {} : { boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' })
         }}
         title={title}
         aria-description={description}
