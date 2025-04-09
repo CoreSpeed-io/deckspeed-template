@@ -61,5 +61,7 @@ export const config = {
     '/',
     '/by-index/:path*',
     '/by-id/:path*'
-  ]
+  ],
+  // NOTE: workaround for https://github.com/denoland/deno/issues/28246, disabled in favor of bun
+  // runtime: "nodejs",
 }

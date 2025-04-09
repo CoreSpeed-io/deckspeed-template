@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+    // NOTE: workaround for https://github.com/denoland/deno/issues/28246, disabled in favor of bun
+    // nodeMiddleware: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
