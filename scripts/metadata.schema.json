@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeckSpeed Metadata Schema",
+  "description": "Schema for DeckSpeed slide deck metadata",
+  "type": "object",
+  "required": [
+    "title",
+    "description",
+    "author",
+    "paperSize",
+    "orientation",
+    "order"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the slide deck"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the slide deck"
+    },
+    "author": {
+      "type": "string",
+      "description": "The author or creator of the slide deck"
+    },
+    "paperSize": {
+      "type": "string",
+      "description": "The paper size for the slide deck (e.g., A4, Letter, WIDE)",
+      "enum": ["A4", "A3", "A5", "LETTER", "LEGAL", "TABLOID", "PRESENTATION", "WIDE"]
+    },
+    "orientation": {
+      "type": "string",
+      "description": "The orientation of the slides",
+      "enum": ["landscape", "portrait"]
+    },
+    "order": {
+      "type": "object",
+      "description": "Mapping of slide IDs to their order in the presentation (1-based indexing)",
+      "patternProperties": {
+        "^.*$": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The position of the slide in the presentation (1-based indexing)"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

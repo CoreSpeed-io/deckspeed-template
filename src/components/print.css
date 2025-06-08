@@ -1,0 +1,22 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #slide-layout,
+  #slide-layout * {
+    visibility: visible;
+  }
+
+  #slide-layout {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    box-shadow: none !important;
+    --tw-shadow: none !important;
+    --tw-shadow-colored: none !important;
+  }
+}
