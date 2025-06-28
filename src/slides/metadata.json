@@ -1,0 +1,10 @@
+{
+  "title": "DeckSpeed",
+  "description": "Generate beautiful slide decks with AI",
+  "author": "CoreSpeed Inc.",
+  "paperSize": "A4",
+  "orientation": "landscape",
+  "order": {
+    "introduction-to-deckspeed-1123": 1
+  }
+}
